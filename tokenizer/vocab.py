@@ -11,13 +11,14 @@ class Vocabulary:
         self._token_to_id: Dict[str, int] = {}
         self._id_to_token: Dict[int, str] = {}
         
-        self.pad_token_id: int = -1
+        self.pad_token_id: int = 0
         self.unk_token_id: int = 1
         self.bos_token_id: int = 50256
         self.eos_token_id: int = 50256
 
         self.add_token(PAD_TOKEN, 0)
         self.add_token(UNK_TOKEN, 1)
+        self.add_token(BOS_TOKEN, 50256)
 
         if vocab_dict is not None:
             for token, idx in vocab_dict.items():
@@ -33,8 +34,6 @@ class Vocabulary:
             idx = len(self._token_to_id)
         self._token_to_id[token] = idx
         self._id_to_token[idx] = token
-        Vocabulary._shared_vocab[token] = idx
-        Vocabulary._shared_id_to_token[idx] = token
         return idx
 
     def token_to_id(self, token: str) -> int:
@@ -58,4 +57,4 @@ class Vocabulary:
         return len(self._token_to_id)
 
     def __contains__(self, token: str) -> bool:
-        return token in self._token_to_id or token in Vocabulary._shared_vocab
+        return token in self._token_to_id
