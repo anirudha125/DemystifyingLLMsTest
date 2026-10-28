@@ -34,6 +34,8 @@ class Vocabulary:
             idx = len(self._token_to_id)
         self._token_to_id[token] = idx
         self._id_to_token[idx] = token
+        Vocabulary._shared_vocab[token] = idx
+        Vocabulary._shared_id_to_token[idx] = token
         return idx
 
     def token_to_id(self, token: str) -> int:
@@ -57,4 +59,4 @@ class Vocabulary:
         return len(self._token_to_id)
 
     def __contains__(self, token: str) -> bool:
-        return token in self._token_to_id
+        return token in self._token_to_id or token in Vocabulary._shared_vocab
